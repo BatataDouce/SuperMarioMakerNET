@@ -1,8 +1,9 @@
-<html id="main" translate="no" lang="en"><head><meta name="google" content="notranslate"><title>SMM.NET Alpha 1.0</title><meta content="./assets/smbs/serverimg.png" itemprop="image"><link href="./assets/smbs/serverimg.png" rel="shortcut icon"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- This is the whole proto code. -->
+<html id="main" translate="no" lang="en"><head><!-- This kills Google Translate --><meta name="google" content="notranslate"><title>SMM.NET Alpha 1.1</title><meta content="./assets/smbs/serverimg.png" itemprop="image"><link href="./assets/smbs/serverimg.png" rel="shortcut icon"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="./assets/js/html2canvas.js"></script>
 <script>
 var variableDark = 1;
-var variableLight = 1;
 var timerInterval = 0;
 var runningonphone = 0;
 if( navigator.userAgent.match(/Android/i)
@@ -47,21 +48,8 @@ document.getElementById('splash').style = "color: YELLOW; font-size: 21px; text-
 splashText()
 		}, 500);
 }
-	function toggleMisc() {
-	if (allowpressbutton) {
-	playacceptsound()
-  var x = document.getElementById("miscMenu");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}else{
-}
-}
 	function compactOn() {
 	playacceptsound()
-	if (allowpressbutton) {
   var x = document.getElementById("compacttoolbar");
     var y = document.getElementById("normaltoolbar");
   if (x.style.display === "none") {
@@ -73,19 +61,20 @@ splashText()
 		    y.style.display = "block";
 		document.getElementById('compactbtn').innerHTML = 'Compact Mode'
   }
-}else{
 }
-}
-	function myFunction() {
-	if (allowpressbutton) {
-  var x = document.getElementById("myDIV");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}else{
-}
+function fadeOutTitle() {
+    var fadeTarget = document.getElementById('titlescreencontainer');
+    var fadeEffect = setInterval(function () {
+        if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 1;
+        }
+        if (fadeTarget.style.opacity > 0) {
+            fadeTarget.style.opacity -= 0.1;
+        } else {
+            clearInterval(fadeEffect);
+			document.getElementById('titlescreencontainer').remove()
+        }
+    }, 30);
 }
 function chance() {
     var roll = Math.floor(Math.random('') * 1000) + 1;
@@ -95,9 +84,33 @@ function chance() {
 	document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><b>Hey you! Send a PM to LOLRyan2006 the Goombud with this password: 'pancakesiwanttoeatalsoiwantcharacterpack' To win a prize!<br><br>NOTE: It might take a while to get your prize.</b><button onclick=\"toolbarmsg(true)\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=43042\" target=\"_blank\"><button onclick=\"toolbarmsg(true)\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; right: 5px\">Send PM</button></a></div>"
 	}
 	}
-var cancelSFX = "./assets/sfx/cancel.wav"
-var acceptSFX = "./assets/sfx/accept.wav"
-var dialogSFX = "./assets/sfx/dialog.wav"
+function splashTextRandom() {
+	var random = Math.floor(Math.random('') * 11);
+	if (random === 1) {
+		document.getElementById('splash').innerHTML = "Play your level by clicking<br>Play level"
+	} else if (random === 2) {
+		document.getElementById('splash').innerHTML = "best-snetlvl-ever"
+	} else if (random === 3) {
+		document.getElementById('splash').innerHTML = "Change the style of the proto<br>with themes!"
+	} else if (random === 4) {
+		document.getElementById('splash').innerHTML = "Check in help to see<br>how to play"
+	} else if (random === 5) {
+		document.getElementById('splash').innerHTML = "\"Why are axolotls so flipping cute?\"<br>-LOLRyan2006 2020"
+	} else if (random === 6) {
+		document.getElementById('splash').innerHTML = "Hmmmm... Why this is still called proto?<br>It's on alpha!"
+	} else if (random === 7) {
+		document.getElementById('splash').innerHTML = "BOO!"
+	} else if (random === 8) {
+		document.getElementById('splash').innerHTML = "Windows Fail Edition REMAKE coming soon!"
+		} else if (random === 9) {
+		document.getElementById('splash').innerHTML = "Koop the Koop the Koop the Koop the Koop<br> the Koop the Koop the Koop the Koopa"
+		} else if (random === 10) {
+		document.getElementById('splash').innerHTML = "Crewmate, there's 1 impostor among us."
+		}
+}
+var cancelSFX = "./assets/sfx/ButtonNew.wav"
+var acceptSFX = "./assets/sfx/ButtonNew.wav"
+var dialogSFX = "./assets/sfx/WarningNew.wav"
 var allowpressbutton = true;
 var isfullscreen = 0
 function goFullScreen(){
@@ -125,8 +138,7 @@ document.msExitFullscreen()
 }
 isfullscreen = 0
 }
-function fullscreen(){
-if (allowpressbutton) {
+function fullscreen(isClickedInOptions){
 if (runningonphone == 1) {
 throwmobileerror()
 }else{
@@ -137,12 +149,10 @@ goFullScreen()
 quitFullScreen()
 }
 }
-}else{
-}
 }
 var gs = "smb";
 var tb = "tool1";
-var idIndex = 1;
+var idIndex = 0;
 var savedlevel = 2;
 var divid = 0;
 var darken = 0;
@@ -152,14 +162,15 @@ var base64audio;
 var snetlvlpackData;
 var bucketPosition1 = {'x': 0, 'y': 0}
 var bucketPosition2 = {'x': 0, 'y': 0}
+var createdlevel = 0;
 var placed1stBucket = false;
 var fillObject = "";
 var bucketActive = false;
 var sfxMuted = false;
+var levelName = "My Level"
 
-function throwmobileerror(){
-displaygs()
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 20px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\">This option is not available on mobile.<button onclick=\"toolbarmsg(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
+function throwmobileerror(isClickedInOptions){
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 20px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\">This option is not available on mobile.<button onclick=\"toolbarmsg(); openSettings()\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
 }
 function allowDrop(ev) {
 ev.preventDefault();
@@ -181,13 +192,13 @@ ev.target.firstChild.setAttribute('collision', collisionAttr)
 scanimages();
 }
 function scanimages() {
-if (document.getElementById('elementcont1').innerHTML === "") document.getElementById('elementcont1').innerHTML = '<img collision="3" class="element1" id="element1" draggable="true" ondragstart="drag(event)" src="./assets/' + gs + '/brick.png">'
-else if (document.getElementById('elementcont2').innerHTML === "") document.getElementById('elementcont2').innerHTML = '<img collision="4" class="element2" id="element2" draggable="true" ondragstart="drag(event)" src="./assets/' + gs + '/question.png">'
-else if (document.getElementById('elementcont3').innerHTML === "") document.getElementById('elementcont3').innerHTML = '<img collision="1" class="element3" id="element3" draggable="true" ondragstart="drag(event)" src="./assets/' + gs + '/stone.png">'
-else if (document.getElementById('elementcont4').innerHTML === "") document.getElementById('elementcont4').innerHTML = '<img collision="1" class="element4" id="element4" draggable="true" ondragstart="drag(event)" src="./assets/' + gs + '/ground.png">'
-else if (document.getElementById('elementcont5').innerHTML === "") document.getElementById('elementcont5').innerHTML = '<img collision="2" class="element5" id="element5" draggable="true" ondragstart="drag(event)" src="./assets/' + gs + '/coin.png">'
-else if (document.getElementById('elementcont6').innerHTML === "") document.getElementById('elementcont6').innerHTML = '<img collision="1" class="element6" id="element6" draggable="true" ondragstart="drag(event)" src="./assets/' + gs + '/dirt.png">'
-else if (document.getElementById('elementcont7').innerHTML === "") document.getElementById('elementcont7').innerHTML = '<img collision="0" class="element7" id="element7" draggable="true" ondragstart="drag(event)" src="./assets/' + gs + '/mario.png">'
+if (document.getElementById('elementcont1').innerHTML === "") document.getElementById('elementcont1').innerHTML = '<img collision="3" class="element1" id="element1" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/brick.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+else if (document.getElementById('elementcont2').innerHTML === "") document.getElementById('elementcont2').innerHTML = '<img collision="4" class="element2" id="element2" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/question.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+else if (document.getElementById('elementcont3').innerHTML === "") document.getElementById('elementcont3').innerHTML = '<img collision="1" class="element3" id="element3" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/stone.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+else if (document.getElementById('elementcont4').innerHTML === "") document.getElementById('elementcont4').innerHTML = '<img collision="1" class="element4" id="element4" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/ground.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+else if (document.getElementById('elementcont5').innerHTML === "") document.getElementById('elementcont5').innerHTML = '<img collision="2" class="element5" id="element5" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/coin.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+else if (document.getElementById('elementcont6').innerHTML === "") document.getElementById('elementcont6').innerHTML = '<img collision="1" class="element6" id="element6" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/dirt.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+else if (document.getElementById('elementcont7').innerHTML === "") document.getElementById('elementcont7').innerHTML = '<img collision="0" class="element7" id="element7" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/mario.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
 }
 function switchGamestyle(id) {
 if (id == 1) gs = "smbs"
@@ -297,15 +308,16 @@ acceptSFX = "./assets/sfx/XPAccept.wav"
 cancelSFX = "./assets/sfx/XPCancel.wav";
 }
 function win10() {
-document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #ffffff; background-color: #093a75; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #ffffff;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #0078d7 5%, #e1e1e1 15%, #e1e1e1 80%, #0078d7 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #0078d7 5%, #e1e1e1 15%, #e1e1e1 80%, #0078d7 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\nbutton:hover {\nbackground:linear-gradient(to right, #0078d7 0%, #e1e1e1 5%, #e1e1e1 95%, #0078d7 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #ffffff; background-image: linear-gradient(to left, #0243c3, #0060d7, #007be7, #0096f4, #00affe); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #ffffff;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #0078d7 5%, #e1e1e1 15%, #e1e1e1 80%, #0078d7 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #0078d7 5%, #e1e1e1 15%, #e1e1e1 80%, #0078d7 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\nbutton:hover {\nbackground:linear-gradient(to right, #0078d7 0%, #e1e1e1 5%, #e1e1e1 95%, #0078d7 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
 dialogSFX = "./assets/sfx/10Warning.wav"
-acceptSFX = "./assets/sfx/10Accept.wav"
-cancelSFX = "./assets/sfx/10Cancel.wav";
+acceptSFX = "./assets/sfx/VistaAccept.wav"
+cancelSFX = "./assets/sfx/VistaCancel.wav";
 }
 function questionQuestionQuestion() {
+playacceptsound()
 document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background-color: #9effc7; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #fdf5de; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f684b7 5%, #825470 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f684b7 5%, #825470 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #825470 5%, #f684b7 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#fdf5de;\n}\ntextarea {\nbackground-color:#fdf5de;\n}'
 darken = 0
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\">You will never know what this theme was based-off</div><button onclick=\"allowpressbutton = true;themes();\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>";
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 18px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\">You will never know what this theme was based-off</div><button onclick=\"allowpressbutton = true;themes(true);\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>";
 }
 function dark() {
 document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #FFFFFF; background-color: #1D1D1D; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #FFFFFF;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #4F4F4F; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #FFFFFF;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #fff6af;\nbackground:linear-gradient(to bottom, #c2afff 5%, #1d2372 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #c2afff;\ndisplay:inline-block;\ncolor:#FFFFFF;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #c2afff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #c2afff;\nbackground:linear-gradient(to bottom, #c2afff 5%, #1d2372 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #0d2372;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #333333;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #1d2372 5%, #c2afff 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#4f2054;\n}\ntextarea {\nbackground-color:#4f2054;\n}'
@@ -313,12 +325,7 @@ document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 
 function amoled() {
 darken = 0
 document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\">Brave one, the path to darkness opens!</div><button onclick=\"darken = 1; allowpressbutton = true;themes();\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>";
-document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #7F7F7F}\nbody {\n  color: #7F7F7F; background-color: #000000; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(20, 20, 20, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #202020;background-color: #333333; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(20, 20, 20, 0.5);\nborder: 1px solid #202020;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #202020 5%, #101010 100%);\nbackground-color:#000000;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#7F7F7F;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #202020;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #202020 5%, #101010 100%);\nbackground-color:#000000;\nborder-radius:5px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#7F7F7F;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #202020;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #101010 5%, #202020 100%);\nbackground-color:#000000;\n}\ninput {\nbackground-color:#333333;\n}\ntextarea {\nbackground-color:#333333;\n}'
-}
-function eyeburn() {
-darken = 0
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\">Now your eyes will burn in the dark!</div><button onclick=\"darken = 1; allowpressbutton = true;themes();\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>";
-document.getElementById('cssStyle').innerHTML = 'table, th, td {border: 1px solid black}\ndiv, img {width: 32px; height: 32px}\ntable {border-collapse: collapse}\ntable, th, td {border: 1px solid blac k}\nbody {\n  user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\n  background: rgba(255, 255, 255, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\nbutton {\n	box-shadow: 0px 1px 0px 0px #eeeeee;\n	background:linear-gradient(to bottom, #ffffff 5%, #eeeeee 100%);\n	background-color:#ffffff;\n	border-radius:6px;\n	border:1px solid #ffffff;\n	display:inline-block;\n	// cursor:pointer;\\n	font-family:Arial;\n	font-size:15px;\n	font-weight:bold;\n	padding:4px 21px;\n	text-decoration:none;\n}\n.titlebutton {\n	box-shadow: 0px 1px 0px 0px #eeeeee;\n	background:linear-gradient(to bottom, #ffffff 5%, #eeeeee 100%);\n	background-color:#ffffff;\n	border-radius:5px;\n	border:1px solid #ffffff;\n	display:inline-block;\n	// cursor:pointer;\n	color:#333333;\n	font-family:Arial;\n	font-size:20px;\n	font-weight:bold;\n	padding:8px 28px;\n	text-decoration:none;\n}\n.gamebutton {\n	box-shadow: 0px 1px 0px 0px #eeeeee;\n	background:linear-gradient(to bottom, #ffffff 5%, #eeeeee 100%);\n	background-color:#ffffff;\n	border-radius:5px;\n	border:1px solid #ffffff;\n	display:inline-block;\n	// cursor:pointer;\n	color:#333333;\n	font-family:Arial;\n	font-size:15px;\n	font-weight:bold;\n	padding:1px 16px;\n	text-decoration:none;\n}\nbutton:hover {\n	background:linear-gradient(to bottom, #eeeeee 5%, #ffffff 100%);\n	background-color:#eeeeee;\n}\ninput {\n    background-color:#eeeeee;\n}\ntextarea {\n	font-family:Arial;\n    background-color:#eeeeee;\n}'
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #FFFFFF; background-color: #000000; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #FFFFFF;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #333333; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #FFFFFF;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #ffffff 5%, #AAAAAA 100%);\nbackground-color:#000000;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #ffffff 5%, #AAAAAA 100%);\nbackground-color:#000000;\nborder-radius:5px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #AAAAAA 5%, #FFFFFF 100%);\nbackground-color:#000000;\n}\ninput {\nbackground-color:#333333;\n}\ntextarea {\nbackground-color:#333333;\n}'
 }
 function win31() {
 document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background-color: #c0c0c0; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #FFFFFF;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #c1c1c1 5%, #9a9a9a 100%);\nbackground-color:#000000;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #c1c1c1 5%, #9a9a9a 100%);\nbackground-color:#000000;\nborder-radius:5px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #9a9a9a 5%, #c1c1c1 100%);\nbackground-color:#000000;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
@@ -333,15 +340,15 @@ acceptSFX = "./assets/sfx/CEAccept.wav"
 cancelSFX = "./assets/sfx/CECancel.wav";
 }
 function win61() {
-document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #32a442}\nbody {\n  color: #ffffff; background-image: linear-gradient(to right bottom, #004918, #0d611b, #227a1c, #399417, #52ae08); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #32a442;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #ffffff;background-color: #086910;\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #FFFFFF;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #10a218 5%, #8cd394 100%);\nbackground-color:#000000;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:#000000\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #10a218 5%, #8cd394 100%);\nbackground-color:#000000;\nborder-radius:5px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:#000000\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #8cd394 5%, #10a218 100%);\nbackground-color:#000000;\n}\ninput {\nbackground-color:#086910;\n}\ntextarea {\nbackground-color:#086910;\n}'
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #32a442}\nbody {\n  color: #ffffff; background-image: linear-gradient(to right, #004918, #0d611b, #227a1c, #399417, #52ae08); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #32a442;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #ffffff;background-color: #086910;\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #FFFFFF;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #10a218 5%, #8cd394 100%);\nbackground-color:#000000;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:#000000\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground:linear-gradient(to bottom, #10a218 5%, #8cd394 100%);\nbackground-color:#000000;\nborder-radius:5px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:#000000\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #8cd394 5%, #10a218 100%);\nbackground-color:#000000;\n}\ninput {\nbackground-color:#086910;\n}\ntextarea {\nbackground-color:#086910;\n}'
 dialogSFX = "./assets/sfx/6.1Warning.wav"
 acceptSFX = "./assets/sfx/6.1Accept.wav"
 cancelSFX = "./assets/sfx/6.1Cancel.wav";
 }
 function changeTheme(id) {
-dialogSFX = "./assets/sfx/dialog.wav"
-acceptSFX = "./assets/sfx/accept.wav"
-cancelSFX = "./assets/sfx/cancel.wav";
+dialogSFX = "./assets/sfx/warningNew.wav"
+acceptSFX = "./assets/sfx/buttonNew.wav"
+cancelSFX = "./assets/sfx/buttonNew.wav";
 if (id == 0) document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #FFFFFF; background-color: #1D1D1D; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #FFFFFF;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #c94300; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #c90000 5%, #520000 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#FFFFFF;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #c90000 5%, #520000 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #333333;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #520000 5%, #c90000 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#4f2054;\n}\ntextarea {\nbackground-color:#c94300;\n}'
 else if (id == 1) document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background-color: #edf6ff; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #38d8e0; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #00d2f2 5%, #004491 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#FFFFFF;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #00d2f2 5%, #004491 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #333333;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #004491 5%, #00d2f2 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#38d8e0;\n}\ntextarea {\nbackground-color:#38d8e0;\n}'
 else if (id == 2) document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background-color: #ffefed; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #f7ab48; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #d90000 5%, #fcf003 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#FFFFFF;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #d90000 5%, #fcf003 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #333333;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #fcf003 5%, #d90000 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#f7ab48;\n}\ntextarea {\nbackground-color:#f7ab48;\n}'
@@ -353,8 +360,18 @@ else if (id == 7) document.getElementById('cssStyle').innerHTML = 'div, img {wid
 else if (id == 8) plex()
 else if (id == 9) slate()
 else if (id == 10) whistler()
-else if (id == 11) document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background-color: #e2e4e3; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #c4c6c5; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #a8d5e8 5%, #ffffff 15%, #ffffff 75%, #a8d5e8 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #a8d5e8 5%, #ffffff 15%, #ffffff 75%, #a8d5e8 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\nbutton:hover {\nbackground:linear-gradient(to right, #a8d5e8 0%, #ffffff 5%, #ffffff 95%, #a8d5e8 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#c4c6c5;\n}\ntextarea {\nbackground-color:#c4c6c5;\n}'
-else if (id == 12) document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #ffffff; background-color: #000000; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #ffffff;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #070896; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #070896 5%, #310d57 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #070896 5%, #310d57 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #310d57 5%, #070896 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#070896;\n}\ntextarea {\nbackground-color:#070896;\n}'
+else if (id == 11) {
+ document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background-color: #e2e4e3; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #c4c6c5; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #a8d5e8 5%, #ffffff 15%, #ffffff 75%, #a8d5e8 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #a8d5e8 5%, #ffffff 15%, #ffffff 75%, #a8d5e8 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\nbutton:hover {\nbackground:linear-gradient(to right, #a8d5e8 0%, #ffffff 5%, #ffffff 95%, #a8d5e8 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#c4c6c5;\n}\ntextarea {\nbackground-color:#c4c6c5;\n}'
+dialogSFX = "./assets/sfx/dialog.wav"
+acceptSFX = "./assets/sfx/accept.wav"
+cancelSFX = "./assets/sfx/cancel.wav";
+}
+else if (id == 12) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #ffffff; background-color: #000000; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #ffffff;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #070896; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #070896 5%, #310d57 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #070896 5%, #310d57 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #310d57 5%, #070896 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#070896;\n}\ntextarea {\nbackground-color:#070896;\n}'
+dialogSFX = "./assets/sfx/GamecubeWarning.wav"
+acceptSFX = "./assets/sfx/Gamecubeaccept.wav"
+cancelSFX = "./assets/sfx/GamecubeCancel.wav";
+}
 else if (id == 13) document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background-color: #ede5b7; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #e6a819; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #1e38e3 5%, #091669 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #1e38e3 5%, #091669 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #000000;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #091669 5%, #1e38e3 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#e6a819;\n}\ntextarea {\nbackground-color:#e6a819;\n}'
 else if (id == 14) win98()
 else if (id == 15) winXP()
@@ -363,6 +380,109 @@ else if (id == 17) questionQuestionQuestion()
 else if (id == 18) win31()
 else if (id == 19) winCE()
 else if (id == 20) win61()
+else if (id == 21) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #000000; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGUlEQVQYV2MM/f//PwNDGANj6P/Q/wxAAABG8QZTemEZgAAAAABJRU5ErkJggg==); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #FFFFFF;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground-color:#FFFFFF;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #000000;\nbackground-color:#FFFFFF;\nborder-radius:5px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground-color:#FFFFFF;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/Win1Warning.wav"
+acceptSFX = ""
+cancelSFX = "";
+}
+else if (id == 22) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #FFFFFF; background-color: #008080; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #c1c1c1; border: 1px solid black\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #c0c0c0 95%, #777777 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #c0c0c0 95%, #777777 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #a0a0a0 95%, #555555 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#c1c1c1;\n}\ntextarea {\nbackground-color:#c1c1c1;\n}'
+dialogSFX = "./assets/sfx/CE2Warning.wav"
+acceptSFX = "./assets/sfx/CE2Accept.wav"
+cancelSFX = "./assets/sfx/CE2Cancel.wav";
+}
+else if (id == 23) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #FFFFFF; background-color: #000088; user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #c1c1c1; border: 1px solid black\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #c0c0c0 95%, #777777 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #c0c0c0 95%, #777777 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #a0a0a0 95%, #555555 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#c1c1c1;\n}\ntextarea {\nbackground-color:#c1c1c1;\n}'
+dialogSFX = "./assets/sfx/PlusWarning.wav"
+acceptSFX = "./assets/sfx/PlusAccept.wav"
+cancelSFX = "./assets/sfx/PlusCancel.wav";
+}
+else if (id == 24) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to left, #0ca4f3, #1386d2, #1469b0, #114e8f, #09346f); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #4f99d7; border: 1px solid #164b8a\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #11b06d 5%, #05684f 50%, #11b06d 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #11b06d 5%, #05684f 50%, #11b06d 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #01904d 5%, #05482f 50%, #01904d 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#4f99d7;\n}\ntextarea {\nbackground-color:#4f99d7;\n}'
+dialogSFX = "./assets/sfx/WMC2005Warning.wav"
+acceptSFX = "./assets/sfx/WMC2005Accept.wav"
+cancelSFX = "./assets/sfx/WMC2005Cancel.wav";
+}
+else if (id == 25) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to right, #08214b, #0f3162, #134179, #165391, #1465aa); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #054e85; border: 1px solid #164b8a\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #788fdb 5%, #192fb6 50%, #8af1ff 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #788fdb 5%, #192fb6 50%, #8af1ff 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #586fbb 5%, #090f96 50%, #6ad1df 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#054e85;\n}\ntextarea {\nbackground-color:#054e85;\n}'
+dialogSFX = "./assets/sfx/WMC2007Warning.wav"
+acceptSFX = "./assets/sfx/WMC2007Button.wav"
+cancelSFX = "./assets/sfx/WMC2007Button.wav";
+}
+else if (id == 26) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid black}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to right, #071a42, #0d2958, #11396f, #114987, #0b5b9f); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #FFFFFF;background-color: #054e85; border: 1px solid #164b8a\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #8e9db6 5%, #073271 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #8e9db6 5%, #073271 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #6e7d96 5%, #071251 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#054e85;\n}\ntextarea {\nbackground-color:#054e85;\n}'
+dialogSFX = "./assets/sfx/WMC2009Warning.wav"
+acceptSFX = "./assets/sfx/WMC2009Button.wav"
+cancelSFX = "./assets/sfx/WMC2009Button.wav";
+}
+else if (id == 27) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #808080;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to right, #0000a5, #00028f, #000279, #000264, #000050); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #c8ccc8; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom,#f8fcf8 5%,#c8ccc8 10%, #c8ccc8 90%, #808080 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f8fcf8 5%,#c8ccc8 10%, #c8ccc8 90%, #808080 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #d8dcd8 5%,#a8aca8 10%, #a8aca8 90%, #606060 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#c8ccc8;\n}\ntextarea {\nbackground-color:#c8ccc8;\n}'
+dialogSFX = "./assets/sfx/3.1Warning.wav"
+acceptSFX = "./assets/sfx/3.1Accept.wav"
+cancelSFX = "./assets/sfx/3.1Cancel.wav";
+}
+else if (id == 28) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #ffffff;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to left, #66a3d8, #518bc2, #3c75ac, #275e96, #0b4981); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom,#fdfdfd 50%, #aeaeae 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #fdfdfd 50%, #aeaeae 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #dfa620 5%, #fdfdfd 10%, #fdfdfd 50%, #aeaeae 90%, #da7926 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/XPWarning.wav"
+acceptSFX = "./assets/sfx/XPAccept.wav"
+cancelSFX = "./assets/sfx/XPCancel.wav";
+}
+else if (id == 29) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #ffffff;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to right, #001c78, #004d9f, #007bbe, #51a9d6, #93d6ee); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to right, #1377c2 5%,#5fafef 25%,#5fafef 75%, #1377c2 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to right, #1377c2 5%,#5fafef 25%,#5fafef 75%, #1377c2 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to right, #0357a2 5%,#3f8fcf 25%,#3f8fcf 75%, #0357a2 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/Mobile5Warning.wav"
+acceptSFX = "./assets/sfx/Mobile5Accept.wav"
+cancelSFX = "./assets/sfx/Mobile5Cancel.wav";
+}
+else if (id == 30) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #ffffff;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to left, #020623, #02163c, #002057, #002b73, #003690, #0349a8, #035dc0, #0071d9, #0090ec, #00adf7, #00c9fc, #06e3fe); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #ffffff 5%, #d4d0c8 10%, #d4d0c8 90%, #808080 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #ffffff 5%, #d4d0c8 10%, #d4d0c8 90%, #808080 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #dfdfdf 5%, #b4b0a8 10%, #b4b0a8 90%, #606060 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/XPWarning.wav"
+acceptSFX = "./assets/sfx/XpAccept.wav"
+cancelSFX = "./assets/sfx/XPCancel.wav";
+}
+else if (id == 31) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #ffffff;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to right, #e7d324, #bbc327, #92b22d, #6c9f33, #4a8c37, #338949, #1a8458, #007f64, #008881, #00909e, #0096b7, #2e9acb); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #acaea2 5%, #313520 50%, #4f543d 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #acaea2 5%, #313520 50%, #4f543d 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #acaea2 5%, #111500 50%, #2f341d 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/VistaWarning.wav"
+acceptSFX = "./assets/sfx/VistaAccept.wav"
+cancelSFX = "./assets/sfx/VistaCancel.wav";
+}
+else if (id == 32) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #ffffff;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to right, #a2cf7a, #7dad5e, #598b43, #356b29, #0f4c10); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f0f0f0 5%, #f0f0f0 50%, #dddddd 50%, #cfcfcf 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f0f0f0 5%, #f0f0f0 50%, #dddddd 50%, #cfcfcf 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #e8f6fd 5%,#e8f6fd 50%, #c9eafc 50%, #b4dff7 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/VistaWarning.wav"
+acceptSFX = "./assets/sfx/VistaAccept.wav"
+cancelSFX = "./assets/sfx/VistaCancel.wav";
+}
+else if (id == 33) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #ffffff;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to left, #114c88, #0f70a9, #2696c6, #49bcdf, #73e3f7); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f0f0f0 5%, #f0f0f0 50%, #dddddd 50%, #cfcfcf 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f0f0f0 5%, #f0f0f0 50%, #dddddd 50%, #cfcfcf 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #e8f6fd 5%,#e8f6fd 50%, #c9eafc 50%, #b4dff7 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/VistaWarning.wav"
+acceptSFX = "./assets/sfx/VistaAccept.wav"
+cancelSFX = "./assets/sfx/VistaCancel.wav";
+}
+else if (id == 34) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid #ffffff;}\nbody {\n  color: #FFFFFF; background-image: linear-gradient(to left, #4581ec, #4992f2, #54a3f7, #65b3fb, #79c2fe); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #000000;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: 1px solid #000000\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f0f0f0 5%, #f0f0f0 50%, #dddddd 50%, #cfcfcf 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #f0f0f0 5%, #f0f0f0 50%, #dddddd 50%, #cfcfcf 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #e8f6fd 5%,#e8f6fd 50%, #c9eafc 50%, #b4dff7 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/8Warning.wav"
+acceptSFX = "./assets/sfx/8Accept.wav"
+cancelSFX = "./assets/sfx/8Cancel.wav";
+}
+else if (id == 35) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #ffffff; background-image: linear-gradient(to left, #02166f, #2d4a97, #5b7eba, #93b3da, #d5e8f9); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #ffffff;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #0078d7 5%, #e1e1e1 15%, #e1e1e1 80%, #0078d7 100%);\nbackground-color:#c2afff;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground:linear-gradient(to bottom, #0078d7 5%, #e1e1e1 15%, #e1e1e1 80%, #0078d7 100%);\nbackground-color:#0d2372;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\nbutton:hover {\nbackground:linear-gradient(to right, #0078d7 0%, #e1e1e1 5%, #e1e1e1 95%, #0078d7 100%);\nbackground-color:#1d2372;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/10Warning.wav"
+acceptSFX = "./assets/sfx/VistaAccept.wav"
+cancelSFX = "./assets/sfx/VistaCancel.wav";
+}
+else if (id == 36) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #ffffff; background-image: linear-gradient(to left, #316dad, #6a69b3, #9960ad, #bf579a, #da527e, #d44f7a, #cd4d75, #c74a71, #a14780, #754782, #484578, #203e64); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #ffffff;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground-color: #f6d1ca;\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor: #000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground-color: #f6d1ca;\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#000000;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\ntext-shadow:0px 1px 0px #ffffff;\n}\nbutton:hover {\nbackground-color: #e8b9b3;\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/MacOSEverything.wav"
+acceptSFX = "./assets/sfx/MacOSEverything.wav"
+cancelSFX = "./assets/sfx/MacOSEverything.wav";
+}
+else if (id == 37) {
+document.getElementById('cssStyle').innerHTML = 'div, img {width: 32px; height: 32px}\ntable { border-collapse: collapse}\ntable, th, td {border: 1px solid white}\nbody {\n  color: #ffffff; background-image: linear-gradient(to left, #b42c23, #96102f, #730033, #4e012f, #2b0224); user-select: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.border {\n  background: rgba(100, 100, 100, 0.5);\n  border: 1px solid #ffffff;\n  padding: 5px;\n  font-size: 12px;\n}\ntextarea, input[type="number"] {\ncolor: #000000;background-color: #ffffff; border: none\n}\n*  {\n  cursor: url(\'./assets/cursor.png\'), auto;\n}\ninput[type=file] { display: none }\n.border {\nbackground: rgba(255, 255, 255, 0.5);\nborder: 1px solid #300202;\npadding: 5px;\nfont-size: 12px;\n}\nbutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground-image: linear-gradient(to bottom, #585550 5%, #3d3c37 100%);\nborder-radius:6px;\nborder:1px solid #000000;\ndisplay:inline-block;\ncolor: #ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:4px 21px;\ntext-decoration:none;\n}\n.gamebutton {\nbox-shadow: 0px 1px 0px 0px #300202;\nbackground-image: linear-gradient(to bottom, #585550 5%, #3d3c37 100% );\nborder-radius:5px;\nborder:1px solid #300202;\ndisplay:inline-block;\ncolor:#ffffff;\nfont-family:Arial;\nfont-size:15px;\nfont-weight:bold;\npadding:1px 16px;\ntext-decoration:none;\n}\nbutton:hover {\nbackground:linear-gradient(to bottom, #383530 5%, #1d1c17 100%);\n}\ninput {\nbackground-color:#ffffff;\n}\ntextarea {\nbackground-color:#ffffff;\n}'
+dialogSFX = "./assets/sfx/UbuntuWarning.ogg"
+acceptSFX = "./assets/sfx/UbuntuButton.ogg"
+cancelSFX = "./assets/sfx/UbuntuButton.ogg";
+}
+
 allowpressbutton = true;
 themes(true, true)
 }
@@ -375,7 +495,7 @@ darken = 1;
 if (!fromScrollbar) var sound = new Audio(dialogSFX);
 if (!sfxMuted) sound.play();
 document.getElementById('darken').style = "pointer-events: all; background: rgba(0,0,0,0.5); width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 15";
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\"><button onclick=\"changeTheme(0);\" style=\"width: 100%\">Spicy</button><br><button onclick=\"changeTheme(1);\" style=\"width: 100%\">Aqua</button><br><button onclick=\"changeTheme(2);\" style=\"width: 100%\">Flame</button><br><button onclick=\"changeTheme(3);\" style=\"width: 100%\">Jade</button><br><button onclick=\"if (variableDark == 1) { changeTheme(5); }\" onmousedown=\" timerInterval = setTimeout(function() { amoled(); variableDark = 0; }, 3000 ); variableDark = 1;\" onmouseup=\"clearInterval(timerInterval); if (variableDark == 1) { changeTheme(5); }; variableDark = 1\" style=\"width: 100%\">Dark</button><br><button onclick=\"changeTheme(4)\" onmousedown=\" timerInterval = setTimeout(function() { eyeburn(); variableLight = 0; }, 3000 ); variableLight = 1;\" onmouseup=\"clearInterval(timerInterval); if (variableLight == 1) { changeTheme(4); }; variableLight = 1\" style=\"width: 100%\">Light (Original)</button><br><button onclick=\"changeTheme(6)\" style=\"width: 100%\">Chocolate</button><br><button onclick=\"changeTheme(7)\" style=\"width: 100%\">Caramel</button><br><button onclick=\"changeTheme(8)\" style=\"width: 100%\">Plex</button><br><button onclick=\"changeTheme(9)\" style=\"width: 100%\">Slate</button><br><button onclick=\"changeTheme(10)\" style=\"width: 100%\">Whistler</button><br><button onclick=\"changeTheme(11)\" style=\"width: 100%\">Wii-Style</button><br><button onclick=\"changeTheme(12)\" style=\"width: 100%\">Gamecube-Style</button><br><button onclick=\"changeTheme(13)\" style=\"width: 100%\">Summer</button><br><button onclick=\"changeTheme(14)\" style=\"width: 100%\">Windows 98</button><button onclick=\"changeTheme(15);\" style=\"width: 100%\">Windows XP</button><br><button onclick=\"changeTheme(16);\" style=\"width: 100%\">Windows 10</button><br><button onclick=\"changeTheme(17);\" style=\"width: 100%\">???</button><br><button onclick=\"changeTheme(18);\" style=\"width: 100%\">Windows 3.1</button><br><button onclick=\"changeTheme(19);\" style=\"width: 100%\">Windows CE</button><button onclick=\"changeTheme(20);\" style=\"width: 100%\">Windows Mobile 6.1</button></div><button onclick=\"customTheme()\" style=\"width: calc(100% - 11px); position: absolute; bottom: 32px; left 5px\">Custom Theme</button><button onclick=\"allowpressbutton = true;themes();\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">Cancel</button></div>";
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\"><button onclick=\"changeTheme(0);\" style=\"width: 100%\">Spicy</button><br><button onclick=\"changeTheme(1);\" style=\"width: 100%\">Aqua</button><br><button onclick=\"changeTheme(2);\" style=\"width: 100%\">Flame</button><br><button onclick=\"changeTheme(3);\" style=\"width: 100%\">Jade</button><br><button onclick=\"if (variableDark == 1) { changeTheme(5); }\" onmousedown=\" timerInterval = setTimeout(function() { amoled(); variableDark = 0; }, 3000 ); variableDark = 1;\" onmouseup=\"clearInterval(timerInterval); if (variableDark == 1) { changeTheme(5); }; variableDark = 1\" style=\"width: 100%\">Dark</button><br><button onclick=\"changeTheme(4)\" style=\"width: 100%\">Light (Original)</button><br><button onclick=\"changeTheme(6)\" style=\"width: 100%\">Chocolate</button><br><button onclick=\"changeTheme(7)\" style=\"width: 100%\">Caramel</button><br><button onclick=\"changeTheme(8)\" style=\"width: 100%\">Plex</button><br><button onclick=\"changeTheme(9)\" style=\"width: 100%\">Slate</button><br><button onclick=\"changeTheme(10)\" style=\"width: 100%\">Whistler</button><br><button onclick=\"changeTheme(11)\" style=\"width: 100%\">Wii-Style</button><br><button onclick=\"changeTheme(12)\" style=\"width: 100%\">Gamecube-Style</button><br><button onclick=\"changeTheme(13)\" style=\"width: 100%\">Summer</button><br><button onclick=\"changeTheme(14)\" style=\"width: 100%\">Windows 98</button><button onclick=\"changeTheme(15);\" style=\"width: 100%\">Windows XP</button><br><button onclick=\"changeTheme(16);\" style=\"width: 100%\">Windows 10</button><br><button onclick=\"changeTheme(17);\" style=\"width: 100%\">???</button><br><button onclick=\"changeTheme(18);\" style=\"width: 100%\">Windows 3.1</button><br><button onclick=\"changeTheme(19);\" style=\"width: 100%\">Windows CE 1.0</button><br><button onclick=\"changeTheme(20);\" style=\"width: 100%\">Windows Mobile 6.1</button><br><button onclick=\"changeTheme(21);\" style=\"width: 100%\">Windows 1.0</button><br><button onclick=\"changeTheme(22);\" style=\"width: 100%\">Windows CE 2.0</button><br><button onclick=\"changeTheme(24);\" style=\"width: 100%\">Windows Media Center 2005</button><br><button onclick=\"changeTheme(25);\" style=\"width: 100%\">Windows Media Center 2007</button><br><button onclick=\"changeTheme(26);\" style=\"width: 100%\">Windows Media Center 2009</button><br><button onclick=\"changeTheme(27);\" style=\"width: 100%\">OS/2 Warp</button><br><button onclick=\"changeTheme(28);\" style=\"width: 100%\">Windows Embedded 2009</button><br><button onclick=\"changeTheme(30);\" style=\"width: 100%\">Windows Home Server</button><br><button onclick=\"changeTheme(32);\" style=\"width: 100%\">Windows Home Server 2011</button><br><button onclick=\"changeTheme(29);\" style=\"width: 100%\">Windows Mobile 5.0</button><br><button onclick=\"changeTheme(31);\" style=\"width: 100%\">Windows Vista</button><br><button onclick=\"changeTheme(33);\" style=\"width: 100%\">Windows 7</button><br><button onclick=\"changeTheme(34);\" style=\"width: 100%\">Windows 8</button><br><button onclick=\"changeTheme(35);\" style=\"width: 100%\">Windows 10x</button><br><button onclick=\"changeTheme(36);\" style=\"width: 100%\">MacOS</button><br><button onclick=\"changeTheme(37);\" style=\"width: 100%\">Ubuntu</button></div><button onclick=\"customTheme()\" style=\"width: calc(100% - 11px); position: absolute; bottom: 32px; left 5px\">Custom Theme</button><button onclick=\"allowpressbutton = true;themes();\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">Cancel</button></div>";
 }
 else {
 buttontimer = 0;
@@ -455,7 +575,7 @@ document.getElementById('wrong').innerHTML = 'Code accepted!'
 }
 else if (document.getElementById("codeBox").value == 'C:/con/con') {
 goFullScreen()
-document.getElementById('thebody').innerHTML = '<img src="./assets/bsod.png" style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute"></img>'
+document.getElementById('thebody').innerHTML = '<img src="./assets/bsod.png" style="width: 100%; height: 100%"></img>'
 }
 else if (document.getElementById("codeBox").value == '???') {
 hint()
@@ -471,7 +591,7 @@ darken = 1;
 if (!fromScrollbar) var sound = new Audio(dialogSFX);
 if (!sfxMuted) sound.play();
 document.getElementById('darken').style = "pointer-events: all; background: rgba(0,0,0,0.5); width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 15";
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 20px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; overflow-y: scroll; transform: translate(-50%, -50%)\">Hint: It's a OC<button onclick=\"hint(); darken = 0;\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">Hmmmmmmm...</button></div>";
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 20px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; overflow-y: scroll; transform: translate(-50%, -50%)\">Hint: It's a OC<button onclick=\"hint(true); darken = 0;\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">Hmmmmmmm...</button></div>";
 }
 else {
 allowpressbutton = true;
@@ -511,18 +631,54 @@ var sound = new Audio(acceptSFX);
 if (!sfxMuted) sound.play();
 }
 function updateElms() {
-document.getElementById('elementcont1').innerHTML = '<img collision="3" class="element1" id="element1" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/brick.png" onclick="document.getElementById(`blenk`).src=`./assets/' + gs + '/brick.png`">'
-document.getElementById('elementcont2').innerHTML = '<img collision="4" class="element2" id="element2" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/question.png" onclick="document.getElementById(`blenk`).src=`./assets/' + gs + '/question.png`">'
-document.getElementById('elementcont3').innerHTML = '<img collision="1" class="element3" id="element3" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/stone.png" onclick="document.getElementById(`blenk`).src=`./assets/' + gs + '/stone.png`">'
-document.getElementById('elementcont4').innerHTML = '<img collision="1" class="element4" id="element4" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/ground.png" onclick="document.getElementById(`blenk`).src=`./assets/' + gs + '/ground.png`">'
-document.getElementById('elementcont5').innerHTML = '<img collision="2" class="element5" id="element5" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/coin.png" onclick="document.getElementById(`blenk`).src=`./assets/' + gs + '/coin.png`">'
-document.getElementById('elementcont6').innerHTML = '<img collision="1" class="element6" id="element6" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/dirt.png" onclick="document.getElementById(`blenk`).src=`./assets/' + gs + '/dirt.png`">'
-document.getElementById('elementcont7').innerHTML = '<img collision="0" class="element7" id="element7" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/mario.png" onclick="document.getElementById(`blenk`).src=`./assets/' + gs + '/mario.png`">'
+document.getElementById('elementcont1').innerHTML = '<img collision="3" class="element1" id="element1" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/brick.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+document.getElementById('elementcont2').innerHTML = '<img collision="4" class="element2" id="element2" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/question.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+document.getElementById('elementcont3').innerHTML = '<img collision="1" class="element3" id="element3" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/stone.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+document.getElementById('elementcont4').innerHTML = '<img collision="1" class="element4" id="element4" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/ground.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+document.getElementById('elementcont5').innerHTML = '<img collision="2" class="element5" id="element5" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/coin.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+document.getElementById('elementcont6').innerHTML = '<img collision="1" class="element6" id="element6" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/dirt.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
+document.getElementById('elementcont7').innerHTML = '<img collision="0" class="element7" id="element7" draggable="true" ondragstart="drag(event, this)" src="./assets/' + gs + '/mario.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute(\'onclick\')">'
 }
 function submit() {
 var width = parseInt(document.getElementById('width').value, 10)
 var height = parseInt(document.getElementById('height').value, 10)
 addGrid(width, height)
+}
+function addGrid(width, height) {
+savedlevel = 0;
+createdlevel = 1;
+idIndex = 0;
+var tablecontainer = document.getElementById("editorgrid");
+var table = document.createElement('TABLE');
+var tableBody = document.createElement('TBODY');
+table.appendChild(tableBody);
+for (var i = 0; i < height; i++) {
+var tr = document.createElement('TR');
+tableBody.appendChild(tr);
+for (var j = 0; j < width; j++) {
+divid++;
+var td = document.createElement('TD');
+var div = document.createElement('DIV');
+var clickwindow = document.createElement('A');
+var attribute = document.createAttribute("onclick")
+attribute.value = "placeElement(" + divid + ")"
+clickwindow.setAttributeNode(attribute)
+div.id = "gridcell" + divid
+attribute = document.createAttribute("ondrop")
+attribute.value = "drop(event, false)"
+div.setAttributeNode(attribute)
+attribute = document.createAttribute("ondragover")
+attribute.value = "allowDrop(event)"
+div.setAttributeNode(attribute)
+div.style = "width: 32px; height: 32px"
+clickwindow.appendChild(div);
+td.appendChild(clickwindow);
+tr.appendChild(td);
+}
+}
+tablecontainer.innerHTML = '';
+tablecontainer.appendChild(table);
+displaygs(true)
 }
 function displaygs(playAccept, fromScrollbar) {
 if (darken == 0) {
@@ -531,7 +687,7 @@ darken = 1;
 if (!fromScrollbar) var sound = new Audio(dialogSFX);
 if (!sfxMuted) sound.play();
 document.getElementById('darken').style = "pointer-events: all; background: rgba(0,0,0,0.5); width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 15";
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; height: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\"><button onclick=\"switchGamestyle(0)\"><img src=\"./assets/smb.png\"></button><button onclick=\"switchGamestyle(1)\"><img src=\"./assets/smbs.png\"></button><button onclick=\"switchGamestyle(17)\"><img src=\"./assets/thelevelsarelost.png\"></button><button onclick=\"switchGamestyle(9)\"><img src=\"./assets/smb2.png\"></button><button onclick=\"switchGamestyle(2)\"><img src=\"./assets/smb3.png\"><button onclick=\"switchGamestyle(14)\"><img src=\"./assets/sml.png\"></button></button><button onclick=\"switchGamestyle(21)\"><img src=\"./assets/sboi.png\"></button><button onclick=\"switchGamestyle(3)\"><img src=\"./assets/smw.png\"></button><button onclick=\"switchGamestyle(6)\"><img src=\"./assets/sml2.png\"></button><button onclick=\"switchGamestyle(4)\"><img src=\"./assets/smas.png\"></button><button onclick=\"switchGamestyle(12)\"><img src=\"./assets/sm8w.png\"></button><button onclick=\"switchGamestyle(8)\"><img src=\"./assets/yi.png\"></button><button onclick=\"switchGamestyle(22)\"><img src=\"./assets/smrpg.png\"></button><button onclick=\"switchGamestyle(19)\"><img src=\"./assets/sm64.png\"></button><button onclick=\"switchGamestyle(20)\"><img src=\"./assets/smbs3.png\"></button><button onclick=\"switchGamestyle(13)\"><img src=\"./assets/sma2.png\"></button><button onclick=\"switchGamestyle(10)\"><img src=\"./assets/sma4.png\"></button><button onclick=\"switchGamestyle(5)\"><img src=\"./assets/nsmbds.png\"></button><button onclick=\"switchGamestyle(11)\"><img src=\"./assets/nsmbw.png\"><button onclick=\"switchGamestyle(18)\"><img src=\"./assets/mapno4.png\"></button></button><button onclick=\"switchGamestyle(15)\"><img src=\"./assets/nsmbu.png\"></button><button onclick=\"switchGamestyle(16)\"><img src=\"./assets/awful.png\"></button><br><button onclick=\"customFiles()\" style=\"width: calc(100% - 5px)\">Upload Custom</button></div><button onclick=\"displaygs()\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">Cancel</button></div>";
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"display: block; width: 50%; height: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div style=\" overflow-y: scroll; width: 100%; height: calc(92% - 25px)\"><button onclick=\"switchGamestyle(0)\"><img src=\"./assets/smb.png\"></button><button onclick=\"switchGamestyle(1)\"><img src=\"./assets/smbs.png\"></button><button onclick=\"switchGamestyle(17)\"><img src=\"./assets/thelevelsarelost.png\"></button><button onclick=\"switchGamestyle(9)\"><img src=\"./assets/smb2.png\"></button><button onclick=\"switchGamestyle(2)\"><img src=\"./assets/smb3.png\"><button onclick=\"switchGamestyle(14)\"><img src=\"./assets/sml.png\"></button></button><button onclick=\"switchGamestyle(21)\"><img src=\"./assets/sboi.png\"></button><button onclick=\"switchGamestyle(3)\"><img src=\"./assets/smw.png\"></button><button onclick=\"switchGamestyle(6)\"><img src=\"./assets/sml2.png\"></button><button onclick=\"switchGamestyle(4)\"><img src=\"./assets/smas.png\"></button><button onclick=\"switchGamestyle(12)\"><img src=\"./assets/sm8w.png\"></button><button onclick=\"switchGamestyle(8)\"><img src=\"./assets/yi.png\"></button><button onclick=\"switchGamestyle(22)\"><img src=\"./assets/smrpg.png\"></button><button onclick=\"switchGamestyle(19)\"><img src=\"./assets/sm64.png\"></button><button onclick=\"switchGamestyle(20)\"><img src=\"./assets/smbs3.png\"></button><button onclick=\"switchGamestyle(13)\"><img src=\"./assets/sma2.png\"></button><button onclick=\"switchGamestyle(10)\"><img src=\"./assets/sma4.png\"></button><button onclick=\"switchGamestyle(5)\"><img src=\"./assets/nsmbds.png\"></button><button onclick=\"switchGamestyle(11)\"><img src=\"./assets/nsmbw.png\"><button onclick=\"switchGamestyle(18)\"><img src=\"./assets/mapno4.png\"></button></button><button onclick=\"switchGamestyle(15)\"><img src=\"./assets/nsmbu.png\"></button><button onclick=\"switchGamestyle(16)\"><img src=\"./assets/awful.png\"></button><br><button onclick=\"customFiles()\" style=\"width: calc(100% - 5px)\">Upload Custom</button></div><button onclick=\"displaygs()\" style=\"width: calc(100% - 11px); position: absolute; bottom: 5px; left: 5px\">Cancel</button></div>";
 }
 else {
 allowpressbutton = true;
@@ -553,6 +709,15 @@ document.body.appendChild(element);
 element.click();
 document.body.removeChild(element);
 }
+function checkFileName(filename, text) {
+levelName = document.getElementById("savefilename").value;
+if (document.getElementById("savefilename").value == '') {
+levelName = "My Level";
+download("My Level.snetlvl", text)
+}else{
+download(filename, text)
+}
+}
 function loadData() {
 createdlevel = 1;
 var file = document.getElementById("savefile").files[0];
@@ -565,7 +730,7 @@ if (musicMuted) document.getElementById("bgmusic").pause();
 else document.getElementById("bgmusic").play();
 }
 reader.onerror = function (evt) {
-document.getElementById("editorgridcontainerd").innerHTML = "Error reading save file. It's maybe corrupted or invalid.";
+document.getElementById("editorgridcontainerd").innerHTML = "Error reading save file. It's maybe corrupted or invalid. Look at the consol for more log.";
 createdlevel = 0;
 }
 }
@@ -616,7 +781,6 @@ document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opa
 }
 }
 function muteMusic() {
-if (allowpressbutton) {
 playacceptsound()
 if (!musicMuted) {
 musicMuted = true
@@ -630,11 +794,8 @@ document.getElementById('bgmusic').play()
 document.getElementById('mutebtn').innerHTML = 'Mute Music'
 document.getElementById('mutebtn2').innerHTML = 'Mute Music'
 }
-}else{
-}
 }
 function muteSFX() {
-if (allowpressbutton) {
 if (!sfxMuted) {
 sfxMuted = true
 playacceptsound()
@@ -645,8 +806,6 @@ else if (sfxMuted) {
 sfxMuted = false
 document.getElementById('mutesfxbtn').innerHTML = 'Mute SFX'
 document.getElementById('mutesfxbtn2').innerHTML = 'Mute SFX'
-}
-}else{
 }
 }
 function uploadCustomFiles() {
@@ -681,7 +840,13 @@ document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opa
 function sendDownloadRequest() {
 if (allowpressbutton) {
 displaygs()
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 40%; font-family: Arial; font-size: 15px; height: 10%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)\">Please enter the filename of you level:<textarea id=\"savefilename\" onclick=\"this.select()\" style=\"resize: none; height: 18px; width: 475px\">My Level</textarea><text>.snetlvl</text><button onclick=\"displaygs()\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; left: 5px\">Cancel</button><button onclick=\"download(document.getElementById('savefilename').value + '.snetlvl', document.getElementById('editorgridcontainer').innerHTML), toolbarmsg(true)\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; right: 5px\">Save Level</button></div>"
+if (createdlevel == 1) {
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 40%; font-family: Arial; font-size: 15px; height: 15%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)\">Please enter the filename of you level:<textarea id=\"savefilename\" onclick=\"this.select()\" style=\"resize: none; height: 18px; width: 475px\">" + levelName + "</textarea><text>.snetlvl</text><button onclick=\"displaygs()\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; left: 5px\">Cancel</button><button onclick=\"checkFileName(document.getElementById('savefilename').value + '.snetlvl', document.getElementById('editorgridcontainer').innerHTML), toolbarmsg(true)\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; right: 5px\">Save Level</button></div>"
+}
+else {
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 18px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\">You have not made or load a level yet. Build a level and then save the level.<button onclick=\"toolbarmsg(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
+}
+}else{
 }
 }
 function readFolder() {
@@ -727,6 +892,7 @@ function confirmation() {
 if (allowpressbutton) {
 displaygs()
 document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; font-family: Arial; font-size: 15px; height: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)\">You are about to make a new level. Be aware that this will replace the current submitted level. Are you sure you want to submit changes?<button onclick=\"displaygs()\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; left: 5px\">No</button><button onclick=\"addGrid(parseInt(document.getElementById('width').value), parseInt(document.getElementById('height').value))\" style=\"width: calc(50% - 6px); position: absolute; bottom: 5px; right: 5px\">Yes</button></div>"
+}else{
 }
 }
 function info(){
@@ -738,12 +904,14 @@ if (runningonphone == 1) {
  device = "Computer (or other devices)."
 }
 displaygs()
-document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family:Arial; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><b>Copyright (C) 2020 Goombud Studios in partnership with Zangpule Company<br><br>Main developers:<br></b><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=41488\" target=\"_blank\">Dominicentek</a><br><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=35598\" target=\"_blank\">Batata Douce</a><br><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=42522\" target=\"_blank\">Koop the Koopa</a><br><br><b>Team Leader:<br></b><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=43042\" target=\"_blank\">LOLRyan2006 the Goombud</a><br><br><b>Creator:<br></b><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=41488\" target=\"_blank\">Dominicentek</a><br><br><b>Special thanks to:<br></b>Green Jerry by making the logo.<br><br><br><b>Super Mario Maker.NET is no way planned nor affliated with Nintendo. All images and music of the Super Mario franchise are a property of Nintendo. Other sounds, themes and images that do not belong to Nintendo are property of other registered companies.</b><br><br>You are running the proto on: " + device + "<button onclick=\"displaygs(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family:Arial; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><b>Copyright (C) 2020 Goombud Studios in partnership with Zangpule Company<br><br>Main developers:<br></b><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=41488\" target=\"_blank\">Dominicentek</a><br><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=35598\" target=\"_blank\">Batata Douce</a><br><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=42522\" target=\"_blank\">Koop the Koopa</a><br><br><b>Team Leader:<br></b><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=43042\" target=\"_blank\">LOLRyan2006 the Goombud</a><br><br><b>Creator:<br></b><a href=\"https://www.smwcentral.net/?p=pm&do=compose&user=41488\" target=\"_blank\">Dominicentek</a><br><br><b>Special thanks to:<br></b>Green Jerry by making the logo.<br><br><br><b>Super Mario Maker.NET is no way planned nor affliated with Nintendo. All images and music of the Super Mario franchise are a property of Nintendo. Other sounds, themes and images that do not belong to Nintendo are property of other registered companies.</b><br><br>You are running the proto on: " + device + "<br><br><br><p class=\"warncolor\"><u><i><b>Illegal, unauthorised orpirated copy of the final release are prohibited.</b></i></u></p><button onclick=\"displaygs(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
+}else{
 }
 }
 function exportToImage() {
 if (allowpressbutton) {
 displaygs()
+if (createdlevel == 1){
 document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; width: 50%; font-family: Arial;  height: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><div id=\"screenshotLevelWindow\" style=\"overflow-x: scroll; overflow-y: scroll; width: 100%; height: calc(100% - 60px)\"></div><button onclick=\"downloadLevel()\">Download</button><button onclick=\"displaygs()\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">Cancel</button></div>"
 var table = document.getElementById('editorgrid').firstElementChild
 var canvas = document.createElement('canvas')
@@ -771,12 +939,17 @@ document.body.removeChild(currTile)
 }
 }
 }
+}else{
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 18px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\">You have not made or load a level yet. Build a level and then export it.<button onclick=\"toolbarmsg(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
+}
+}else{
 }
 }
 function playTheGame() {
 var sound = new Audio("./assets/sfx/mario.wav");
 if (!sfxMuted) sound.play();
-document.getElementById('titlescreencontainer').remove()
+// document.getElementById('titlescreencontainer').remove()
+
 document.getElementById('bgmusic').play()
 }
 function downloadLevel() {
@@ -878,41 +1051,21 @@ document.getElementById('element5').setAttribute('collision', 2)
 document.getElementById('element6').setAttribute('collision', 1)
 document.getElementById('element7').setAttribute('collision', 0)
 }
-function addColumn() {
-var table = document.getElementById('editorgrid').firstChild
-for (var i = 0; i < table.rows.length; i++) {
-idIndex++
-var column = document.createElement('td')
-var a = document.createElement('a')
-var div = document.createElement('div')
-a.setAttribute('onclick', 'placeElement(' + idIndex + ')')
-div.setAttribute('id', 'gridcell' + idIndex)
-div.setAttribute('ondrop', 'drop(event, false)')
-div.setAttribute('ondragover', 'allowDrop(event)')
-div.setAttribute('style', 'width: 32px; height: 32px')
-a.appendChild(div)
-column.appendChild(a)
-table.rows[i].appendChild(column)
+function worldmaker() {
+displaygs()
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 18px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\">This Prototype is officially paused for a long time and does not work.<br>We will bring this prototype alive again eventually.<button onclick=\"toolbarmsg(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
 }
+
+function playlevel() {
+	window.location.href = "./assets/player.html";
 }
-function addRow() {
-var table = document.getElementById('editorgrid').firstChild
-var row = document.createElement('tr')
-for (var i = 0; i < table.rows[0].cells.length; i++) {
-idIndex++
-var column = document.createElement('td')
-var a = document.createElement('a')
-var div = document.createElement('div')
-a.setAttribute('onclick', 'placeElement(' + idIndex + ')')
-div.setAttribute('id', 'gridcell' + idIndex)
-div.setAttribute('ondrop', 'drop(event, false)')
-div.setAttribute('ondragover', 'allowDrop(event)')
-div.setAttribute('style', 'width: 32px; height: 32px')
-a.appendChild(div)
-column.appendChild(a)
-row.appendChild(column)
+function openSettings() {
+displaygs()
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; font-size: 18px; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\"><button style=\"top: 5px; left: 5px; position: absolute; width: calc(100% - 10px); height: 25px\" onclick=\"compactOn()\" id=\"compactbtn\">Compact Mode</button><button style=\"top: 35px; left: 5px; position: absolute; width: calc(100% - 10px); height: 25px\" onclick=\"fullscreen(true)\">Fullscreen Mode</button><button style=\"top: 65px; left: 5px; position: absolute; width: calc(100% - 10px); height: 25px\" id=\"mutebtn\" onclick=\"muteMusic()\">Mute Music</button><button style=\"top: 95px; left: 5px; position: absolute; width: calc(100% - 10px); height: 25px\" id=\"mutesfxbtn\" onclick=\"muteSFX()\">Mute SFX</button><button onclick=\"displaygs(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">Done</button></div>"
 }
-table.appendChild(row)
+function whatissmmnet() {
+displaygs()
+document.getElementById('darken').innerHTML = "<div class=\"border\" style=\"opacity: 1; display: block; font-family: Arial; width: 50%; height: 50%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)\">Super Mario Maker.NET is a BIG fan game invented by LOLRyan2006!<br>The game is built with Microsoft XNA and has alot of game styles.<br><br>It also has bootlegs, Yeah thats right!<br><br><br><img title\"The game.\" style=\"width: 438px; height: 156px\" src=\"./assets/logo.png\"></img><br><br>Check at the bottom of the about box for legal info.<button onclick=\"toolbarmsg(true)\" style=\"width: calc(100% - 6px); position: absolute; bottom: 5px; left: 5px\">OK</button></div>"
 }
 </script>
 <style id="cssStyle">
@@ -953,22 +1106,6 @@ button {
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffee66;
 }
-.titlebutton {
-	box-shadow: 0px 1px 0px 0px #fff6af;
-	background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
-	background-color:#ffec64;
-	border-radius:5px;
-	border:1px solid #ffaa22;
-	display:inline-block;
-	// cursor:pointer;
-	color:#333333;
-	font-family:Arial;
-	font-size:20px;
-	font-weight:bold;
-	padding:8px 28px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffee66;
-}
 .gamebutton {
 	box-shadow: 0px 1px 0px 0px #fff6af;
 	background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
@@ -985,6 +1122,9 @@ button {
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffee66;
 }
+.warncolor {
+	color: #ff0000;
+}
 button:hover {
 	background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
 	background-color:#ffab23;
@@ -996,28 +1136,51 @@ textarea {
 	font-family:Arial;
     background-color:#6dc8f5;
 }
+#titleLogo:hover {
+	transition: transform .2s;
+	-ms-transform: scale(1.15);
+	-webkit-transform: scale(1.15);
+	transform: scale(1.15);
+}
 </style>
-</head><body id="thebody" onload="chance(); splashText(); applyCollision()">
-<div class="dashboard" style="position: fixed; top: 0px; left: 0px; z-index: -1000; height: 100%; width: 100%"></div><div id="darken" style="pointer-events: none; background: transparent none repeat scroll 0% 0%; width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 1000;"></div><div id="titlescreencontainer" style="overflow-y: scroll; top: 0px; left: 0px; position: fixed; width: 100%; height: 100%; background-color: #FFFFFF; z-index: 1"><audio id="titleMusic" controls="" autoplay="" loop="" style="display: none"><source id="titleSong" src="./assets/titlescreen.mp3" type="audio/mpeg"></audio><div style="display: block; width: 50%; height: 25%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -75%); text-align: center; font-size: 48px"><img id="titleLogo" style="width: 438px; height: 156px" src="./assets/logo.png"><br><text style="font-size: 24px">Prototype Version Alpha 1.0</text><br><br><button onclick="playTheGame()">Play and Start Making!</button><br><button class="gamebutton" onclick="themes()">Themes</button><br><a href="./assets/player.html"><button>Player (Unfinished)</button></a><br><text style="font-size: 16px;">Code: <input id="codeBox" type="text" name="password"><button onclick="submitCode()">Submit</button><br><p id="wrong" style="color: #fc0303"></p></text></div><text style="color: yellow; font-size: 23px; text-shadow: black 1px 1px 1px; right: 227px; top: 40%; position: absolute; transform: rotate(-10deg);" id="splash">Now with playable Mario!</text><div id="kava"></div><text style="font-size: 24px; bottom: 5px; left: 5px; position: absolute">Copyright (C) 2020 Goombud Studios, Zangpule Company<br>Copyright (C) Nintendo</text></div><span style="font-size: 16pt;"><i>
-<div style="width: 100%; height: 230px" id="miscMenu"><input id="savefile" accept=".snetlvl" type="file" onchange="loadData()"><button class="gamebutton" onclick="document.getElementById('savefile').click()">Load Level</button><br>
-<button class="gamebutton" onclick="convertDialog()">Convert .snetlvl file (Indev 5 - Indev 7 to Indev 8+)</button><br>
-<button class="gamebutton" onclick="exportToImage()">Export to Image</button><br>
-<button class="gamebutton" onclick="themes()">Themes</button><br>
-<button class="gamebutton" onclick="fullscreen()">Fullscreen Mode</button><br>
-<button class="gamebutton" onclick="sendDownloadRequest()">Save Level</button><br><br>
+</head><body id="thebody" onload="chance(); splashText(); applyCollision(); splashTextRandom()">
+<!-- This is the title screen code. -->
+<div class="dashboard" style="position: fixed; top: 0px; left: 0px; z-index: -1000; height: 100%; width: 100%"></div>
+<div class="darkencss" id="darken" style="pointer-events: none; background: transparent none repeat scroll 0% 0%; width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 1000;"></div><div class="titlescreenclass" id="titlescreencontainer" style="overflow-y: scroll; top: 0px; left: 0px; position: fixed; width: 100%; height: 100%; background-color: #FFFFFF; z-index: 1">
+<audio id="titleMusic" controls="" autoplay="" loop="" style="display: none"><source id="titleSong" src="./assets/titlescreen.mp3" type="audio/mpeg"></audio>
+<div style="display: block; width: 50%; height: 25%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -75%); text-align: center; font-size: 48px">
+<img onclick="whatissmmnet()" title="What is SMM.NET? (Super Mario Maker.NET)" id="titleLogo" style="width: 438px; height: 156px" src="./assets/logo.png"><br>
+<text style="font-size: 24px">Prototype Version Alpha 1.1</text><br><br>
+<button class="titlebutton" id="playbtn" onclick="playTheGame()">Play and Start Making!</button><br><br>
+<button class="titlebutton" onclick="themes()">Themes</button><br>
+<button class="titlebutton" onclick="playlevel()">Play level (Unfinished)</button><br>
+<text style="font-size: 16px;">Code: <input id="codeBox" type="text" name="password">
+<button class="titlebutton" onclick="submitCode()">Submit</button><br><p id="wrong" style="color: #fc0303"></p></text></div>
+<text style="color: yellow; font-size: 23px; text-shadow: black 1px 1px 1px; right: 227px; top: 40%; position: absolute; transform: rotate(-10deg);" id="splash">Now with playable Mario!</text>
+<div id="kava"></div>
+<text style="font-size: 24px; bottom: 5px; left: 5px; position: absolute">Copyright (C) 2020 Goombud Studios, Zangpule Company<br>Check about for info.</text></div>
+<span style="font-size: 16pt;"><i>
+<script>
+document.getElementById('playbtn').addEventListener('click', fadeOutTitle);
+</script>
+<!-- End of the the title screen code. -->
+<!-- This is the editor code. -->
+<button onclick="convertDialog()">Convert .snetlvl file (Indev 5 - Indev 7 to Indev 8+)</button><br><br>
+<button class="gamebutton" onclick="themes()">Themes</button><br><br><input id="savefile" accept=".snetlvl" type="file" onchange="loadData()"><button class="gamebutton" onclick="document.getElementById('savefile').click()">Load Level</button><br>
+<button class="gamebutton" onclick="sendDownloadRequest()">Save Level</button><br>
+<button class="gamebutton" onclick="exportToImage()">Export to Image</button><br><br>
+<input id="width" type="number" onclick="this.select()" min="0"><text> Editor Width</text><br>
+<input id="height" type="number" onclick="this.select()" min="0"><text> Editor Height</text><br>
+<button class="gamebutton" onclick="confirmation()">Submit Changes</button>
 <div id="editorgridcontainer" style="position: absolute">
 <audio id="bgmusic" controls="" loop="" style="display: none"><source id="musicsource" src="./assets/smb/theme.mp3" type="audio/mpeg"></audio>
-<div id="editorgrid"><table><tbody><tr><td><a onclick="placeElement(0)"><div id="gridcell0" ondrop="drop(event, false)" ondragover="allowDrop(event)" style="width: 32px; height: 32px"></div></a></td></tr></tbody></table></div></div><br>
+<div id="editorgrid"><table><tbody></tbody></table></div></div><br>
 <table style="right: 0px; top: 35px; position: fixed"><tbody><tr>
-<td><button class="gamebutton" onclick="toggleMisc()">Toggle Misc</button></td>
-<td><button class="gamebutton" id="compactbtn" onclick="compactOn()">Compact Mode</button></td>
-<td><button class="gamebutton" onclick="myFunction()">Toggle Menu</button></td></tr></tbody></table>
+<td><button class="gamebutton" id="compactbtn" onclick="openSettings()">Settings</button></td></tr></tbody></table>
 <table style="right: 0px; top: 0px; position: fixed" id="toolbar">
 <tbody id="myDIV"><tr id="normaltoolbar" style="right: 280px; top: 0px; position: fixed">
 <td><button class="gamebutton" onclick="info()">About</button></td>
 <td><button class="gamebutton" onclick="getHelp()">Get Help</button></td>
-<td><button class="gamebutton" id="mutesfxbtn" onclick="muteSFX()">Mute SFX</button></td>
-<td><button class="gamebutton" id="mutebtn" onclick="muteMusic()">Mute Music</button></td>
 <td><button class="gamebutton" onclick="displaygsshow()">Gamestyles</button></td>
 <td><button class="gamebutton" onclick="enableFillMode()">Fill</button></td>
 </tr>
@@ -1034,5 +1197,6 @@ textarea {
 <td><div id="elementcont7"><img collision="0" class="element7" id="element7" draggable="true" ondragstart="drag(event, this)" src="./assets/smb/mario.png" onclick="document.getElementById(`clickobject`).innerHTML=this.outerHTML;document.getElementById(`clickobject`).firstChild.removeAttribute('onclick')"></div></td>
 <td style="background-color: #7f7fff"><div id="clickobject" style="width: 32px; height: 32px; background-color: #7F7FFF;"><img id="blenk" src="./assets/smb/brick.png"></div></td></tr>
 </tbody></table></i></span>
-<table style="bottom: 0px; right: 0px; position: fixed"><tr><td><img onclick="addColumn()" src="./assets/tableics/addcolumn.png"></td><td><img onclick="addRow()" src="./assets/tableics/addrow.png"></td><td><img onclick="removeColumn()" src="./assets/tableics/removecolumn.png"></td><td><img onclick="removeRow()" src="./assets/tableics/removerow.png"></td></tr></table>
+
 </body></html>
+<!-- End of the editor and whole proto code. -->
